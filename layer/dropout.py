@@ -8,6 +8,9 @@ from IPython import embed
 class Dropout:
 
     def __init__(self, input_dim, output_dim, p=0.5, bias=True):
+        '''
+        @param p: keep probility of neurals, if p=1, dropout is equal to fc
+        '''
         self.weight = np.random.normal(size=(input_dim, output_dim))
         self.weight_grad = np.zeros(self.weight.shape)
         self.bias = np.zeros((1, output_dim)) if bias else None
@@ -22,9 +25,8 @@ class Dropout:
         '''
         self.x = x
         self.neural_mask = np.random.binomial(1, self.prob, size=(1, self.weight.shape[0]))
-        drop_x = self.neural_mask * x
-        self.drop_x = drop_x
-        output = np.dot(drop_x, self.weight)
+        self.drop_x = self.neural_mask * x
+        output = np.dot(self.drop_x, self.weight)
         if self.bias is not None:
             output += self.bias
         return output
@@ -50,7 +52,7 @@ class Dropout:
         if self.bias is not None:
             self.bias_grad += grad_input
         grad_output = np.dot(grad_input, self.weight.transpose())
-        return grad_output
+        return grad_output * self.neural_mask
 
     def update_grad(self, lr=1e-2):
         self.weight += lr * self.weight_grad
