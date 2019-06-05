@@ -1,0 +1,11 @@
+*.txt
+*.jpg
+*.pyc
+*.so
+*.npy
+*.pth
+*.swp
+*build/
+*dist/
+*egg-info/
+*runs/

@@ -5,7 +5,7 @@ import numpy as np
 from IPython import embed
 
 
-class Conv2d:
+class Pooling2d:
 
     def __init__(self,):
         pass
